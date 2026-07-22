@@ -15,7 +15,7 @@ Platform architecture (hypervisor, guests, storage roles) lives in the companion
 
 | Repository | Covers |
 |------------|--------|
-| **[ZimaBoard-2-Homelab](https://github.com/Archin3t/Homelab-Media-Stack/tree/main)** | Platform blueprint — Proxmox layout, guests, storage philosophy, networking |
+| **[ZimaBoard-2-Homelab](https://github.com/Archin3t/ZimaBoard-2-Homelab)** | Platform blueprint — Proxmox layout, guests, storage philosophy, networking |
 | **[ZimaBoard-NAS](https://github.com/Archin3t/ZimaBoard-NAS)** | NAS, shares, disk passthrough, file drop services, backups, and extras |
 
 ---
