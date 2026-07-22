@@ -24,7 +24,7 @@ Platform architecture (hypervisor, guests, storage roles) lives in the companion
 
 📖 Browse the documentation as a website (enable GitHub Pages on the `docs/` folder):
 
-**https://archin3t.github.io/ZimaBoard-Media-Stack/**
+**https://archin3t.github.io/Homelab-Media-Stack/**
 
 ---
 
