@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ZimaBoard Media Stack</title>
+  <style>
+    :root {
+      --bg: #0b1220;
+      --surface: #111a2e;
+      --surface-2: #162036;
+      --border: #243049;
+      --text: #e8edf7;
+      --muted: #9aa8c0;
+      --accent: #22d3ee;
+      --accent-dim: #0891b2;
+      --accent-bg: rgba(34, 211, 238, 0.08);
+      --radius: 10px;
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+      --font: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+      --mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
+      --max: 920px;
+      --nav-h: 3.25rem;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: calc(var(--nav-h) + 1rem);
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font);
+      font-size: 1rem;
+      line-height: 1.65;
+      color: var(--text);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .topnav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0 1.25rem;
+      background: rgba(11, 18, 32, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .topnav .brand {
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+      margin-right: auto;
+    }
+
+    .topnav nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem 0.75rem;
+      font-size: 0.82rem;
+    }
+
+    .topnav nav a {
+      color: var(--muted);
+      text-decoration: none;
+      padding: 0.2rem 0;
+    }
+
+    .topnav nav a:hover { color: var(--accent); text-decoration: none; }
+
+    .hero {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 2.5rem 1.25rem 1rem;
+    }
+
+    .hero h1 {
+      margin: 0 0 0.5rem;
+      font-size: clamp(1.75rem, 4vw, 2.35rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .hero .lead {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 62ch;
+    }
+
+    main {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 1.25rem 3rem;
+    }
+
+    section {
+      margin-top: 2.25rem;
+      scroll-margin-top: calc(var(--nav-h) + 1rem);
+    }
+
+    h2 {
+      margin: 0 0 0.85rem;
+      font-size: 1.35rem;
+      font-weight: 650;
+      color: var(--text);
+      padding-bottom: 0.45rem;
+      border-bottom: 2px solid var(--accent-dim);
+      display: inline-block;
+    }
+
+    h3 {
+      margin: 1.25rem 0 0.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    p { margin: 0.65rem 0; }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.15rem 1.25rem;
+      box-shadow: var(--shadow);
+      margin: 1rem 0;
+    }
+
+    .card.highlight {
+      border-color: var(--accent-dim);
+      background: linear-gradient(135deg, var(--surface) 0%, var(--surface-2) 100%);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      font-size: 0.92rem;
+    }
+
+    th, td {
+      border: 1px solid var(--border);
+      padding: 0.55rem 0.75rem;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--surface-2);
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    tr:nth-child(even) td { background: rgba(255, 255, 255, 0.02); }
+
+    code, pre {
+      font-family: var(--mono);
+      font-size: 0.88em;
+    }
+
+    code {
+      background: var(--accent-bg);
+      color: var(--accent);
+      padding: 0.12em 0.4em;
+      border-radius: 4px;
+      word-break: break-word;
+    }
+
+    pre {
+      background: #070d18;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.15rem;
+      overflow-x: auto;
+      line-height: 1.45;
+      color: #c5d4ea;
+      margin: 1rem 0;
+    }
+
+    ul, ol { margin: 0.5rem 0; padding-left: 1.35rem; }
+    li { margin: 0.35rem 0; }
+    li::marker { color: var(--accent-dim); }
+
+    .diagram {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      line-height: 1.35;
+      white-space: pre;
+      overflow-x: auto;
+    }
+
+    .diagram-html {
+      display: grid;
+      gap: 0.75rem;
+      margin: 1rem 0;
+    }
+
+    .diagram-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.75rem;
+      align-items: stretch;
+    }
+
+    .diagram-box {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.75rem 1rem;
+      text-align: center;
+      min-width: 140px;
+      flex: 1 1 140px;
+      max-width: 220px;
+    }
+
+    .diagram-box.host {
+      border-color: var(--accent-dim);
+      background: var(--accent-bg);
+      max-width: 280px;
+      flex-basis: 100%;
+    }
+
+    .diagram-box small { display: block; color: var(--muted); margin-top: 0.25rem; font-size: 0.78rem; }
+
+    .diagram-arrow {
+      text-align: center;
+      color: var(--accent-dim);
+      font-size: 1.1rem;
+      line-height: 1;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--accent);
+      background: var(--accent-bg);
+      border: 1px solid var(--accent-dim);
+      border-radius: 999px;
+      padding: 0.15rem 0.55rem;
+      margin-bottom: 0.35rem;
+    }
+
+    footer {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 2.5rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 720px) {
+      .topnav { flex-wrap: wrap; height: auto; padding: 0.65rem 1rem; }
+      .topnav nav { font-size: 0.78rem; }
+    }
+
+    @media print {
+      body { background: #fff; color: #111; }
+      .topnav { position: static; background: #fff; border-bottom: 1px solid #ccc; }
+      .topnav nav a, a { color: #036; }
+      .card, pre, th { background: #f5f5f5 !important; box-shadow: none; }
+      h2 { border-color: #333; color: #111; }
+      code { background: #eee; color: #111; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="topnav">
+  <span class="brand">Media Stack</span>
+  <nav aria-label="Page sections">
+    <a href="#overview">Overview</a>
+    <a href="#pipelines">Pipelines</a>
+    <a href="#apps">Apps</a>
+    <a href="#storage">Storage</a>
+    <a href="#access">Access</a>
+    <a href="#create">Create</a>
+    <a href="#use">Use</a>
+    <a href="#related">Related</a>
+    <a href="#safety">Safety</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <h1>ZimaBoard Media Stack</h1>
+  <p class="lead">Request → download → organize → stream for movies and TV, plus a books/reading lane — documented with placeholders only.</p>
+</div>
+
+<main>
+
+  <section id="overview">
+    <h2>Overview</h2>
+    <div class="card highlight">
+      <p>This stack covers <strong>movies/TV</strong> (Jellyfin, Jellyseerr, Sonarr, Radarr, Prowlarr, qBittorrent) and <strong>books</strong> (Kavita, librarr, Calibre-Web Automated). Hypervisor layout and NAS shares live in companion repos; this page describes the app pipeline and how pieces connect.</p>
+    </div>
+    <table>
+      <thead>
+        <tr><th>Lane</th><th>Job</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Watch</td><td>Jellyfin streams libraries from shared media storage</td></tr>
+        <tr><td>Request</td><td>Jellyseerr (or similar) is the human-facing ask UI</td></tr>
+        <tr><td>Automate</td><td>Sonarr / Radarr + Prowlarr find and grab; qBittorrent downloads</td></tr>
+        <tr><td>Read</td><td>Kavita (+ librarr / Calibre-Web Automated) for books and comics</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="pipelines">
+    <h2>Pipelines</h2>
+    <p>Two parallel flows share the same design language: media automation writes into a shared volume that the player reads; books stay on their own library path.</p>
+
+    <div class="diagram-html" aria-label="Media pipeline diagram">
+      <div class="diagram-row">
+        <div class="diagram-box host">
+          <span class="badge">Ask</span>
+          Jellyseerr<br><small><code>&lt;REQUEST_HOST&gt;:5055</code></small>
+        </div>
+      </div>
+      <div class="diagram-arrow">&#8595;</div>
+      <div class="diagram-row">
+        <div class="diagram-box">
+          <span class="badge">TV</span>
+          Sonarr<br><small><code>&lt;SONARR_HOST&gt;</code></small>
+        </div>
+        <div class="diagram-box">
+          <span class="badge">Movies</span>
+          Radarr<br><small><code>&lt;RADARR_HOST&gt;</code></small>
+        </div>
+        <div class="diagram-box">
+          <span class="badge">Indexers</span>
+          Prowlarr<br><small><code>&lt;PROWLARR_HOST&gt;</code></small>
+        </div>
+      </div>
+      <div class="diagram-arrow">&#8595;</div>
+      <div class="diagram-row">
+        <div class="diagram-box">
+          <span class="badge">Download</span>
+          qBittorrent<br><small><code>&lt;QBIT_HOST&gt;:8080</code></small>
+        </div>
+        <div class="diagram-box">
+          <span class="badge">Play</span>
+          Jellyfin<br><small><code>&lt;JELLYFIN_HOST&gt;:8096</code></small>
+        </div>
+      </div>
+      <div class="diagram-arrow">shared media volume &nbsp;&middot;&nbsp; hardlinks preferred</div>
+    </div>
+
+    <h3>Books lane</h3>
+    <div class="diagram-html" aria-label="Books pipeline diagram">
+      <div class="diagram-row">
+        <div class="diagram-box">
+          <span class="badge">Acquire</span>
+          librarr<br><small>optional automation</small>
+        </div>
+        <div class="diagram-box">
+          <span class="badge">Library</span>
+          Calibre-Web Automated<br><small>ingest / organize</small>
+        </div>
+        <div class="diagram-box">
+          <span class="badge">Read</span>
+          Kavita<br><small><code>&lt;KAVITA_HOST&gt;:5000</code></small>
+        </div>
+      </div>
+    </div>
+
+    <pre class="diagram">  Jellyseerr
+       |
+       +--&gt; Sonarr --+
+       |             |
+       +--&gt; Radarr --+--&gt; qBittorrent --&gt; /data/media
+                     |                         ^
+                     +--&gt; Prowlarr             |
+                                               |
+                                         Jellyfin
+
+  librarr (opt) --&gt; Calibre-Web Automated --&gt; Kavita
+                         (books disk)</pre>
+  </section>
+
+  <section id="apps">
+    <h2>Apps</h2>
+    <p>Ports and hosts below are <strong>placeholders</strong>. Set real values only on your infrastructure.</p>
+    <table>
+      <thead>
+        <tr><th>App</th><th>Role</th><th>Placeholder</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Jellyfin</td><td>Movies/TV player and library UI</td><td><code>http://&lt;JELLYFIN_HOST&gt;:8096</code></td></tr>
+        <tr><td>Jellyseerr</td><td>Request / approve titles</td><td><code>http://&lt;REQUEST_HOST&gt;:5055</code></td></tr>
+        <tr><td>Sonarr</td><td>TV series automation</td><td><code>http://&lt;SONARR_HOST&gt;:8989</code></td></tr>
+        <tr><td>Radarr</td><td>Movie automation</td><td><code>http://&lt;RADARR_HOST&gt;:7878</code></td></tr>
+        <tr><td>Prowlarr</td><td>Indexer manager for *arr</td><td><code>http://&lt;PROWLARR_HOST&gt;:9696</code></td></tr>
+        <tr><td>qBittorrent</td><td>Torrent download client</td><td><code>http://&lt;QBIT_HOST&gt;:8080</code></td></tr>
+        <tr><td>Kavita</td><td>Books / comics reader</td><td><code>http://&lt;KAVITA_HOST&gt;:5000</code></td></tr>
+        <tr><td>librarr</td><td>Optional books acquisition helper</td><td><code>http://&lt;LIBRARR_HOST&gt;</code></td></tr>
+        <tr><td>Calibre-Web Automated</td><td>Book ingest, metadata, library sync</td><td><code>http://&lt;CWA_HOST&gt;</code></td></tr>
+      </tbody>
+    </table>
+    <div class="card">
+      <p><strong>Mental model:</strong> Request UI = ask &nbsp;&middot;&nbsp; *arr = automate (usually ignore day-to-day) &nbsp;&middot;&nbsp; qBittorrent = transfers &nbsp;&middot;&nbsp; Jellyfin = watch &nbsp;&middot;&nbsp; Kavita = read.</p>
+    </div>
+  </section>
+
+  <section id="storage">
+    <h2>Storage</h2>
+    <div class="card">
+      <p>Mount media by <strong>LABEL</strong> or <code>/dev/disk/by-id/...</code> — never by unstable <code>/dev/sdX</code> letters. Player and automation guests should see the <strong>same absolute path</strong> so hardlinks work.</p>
+    </div>
+    <table>
+      <thead>
+        <tr><th>Data</th><th>Example path</th><th>Consumers</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Movies / TV / downloads</td><td><code>/data/media</code></td><td>Sonarr, Radarr, qBittorrent, Jellyfin</td></tr>
+        <tr><td>Books / textbooks</td><td><code>/data/books</code> (own disk preferred)</td><td>Kavita, Calibre-Web Automated, librarr</td></tr>
+        <tr><td>App configs</td><td><code>/config/&lt;app&gt;</code></td><td>Each container / service</td></tr>
+      </tbody>
+    </table>
+    <p>Keep books off the movies/TV volume unless you intentionally want one big library disk.</p>
+  </section>
+
+  <section id="access">
+    <h2>Access</h2>
+    <p>Private LAN (or your own VPN mesh) unless you deliberately add a reverse proxy and TLS. Document the real map privately — not in public git.</p>
+    <table>
+      <thead>
+        <tr><th>I want to…</th><th>Open</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Watch movies/TV</td><td><code>http://&lt;JELLYFIN_HOST&gt;:8096</code></td></tr>
+        <tr><td>Request a title</td><td><code>http://&lt;REQUEST_HOST&gt;:5055</code></td></tr>
+        <tr><td>Check download progress</td><td><code>http://&lt;QBIT_HOST&gt;:8080</code></td></tr>
+        <tr><td>Tune TV / movie automation</td><td>Sonarr / Radarr WebUIs</td></tr>
+        <tr><td>Manage indexers</td><td>Prowlarr WebUI</td></tr>
+        <tr><td>Read books</td><td><code>http://&lt;KAVITA_HOST&gt;:5000</code></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="create">
+    <h2>Create</h2>
+    <p>Condensed bring-up — adjust names and paths to match your host.</p>
+    <ol>
+      <li>Prepare a guest (LXC with nesting / Docker, or VM) with LAN access and enough disk for configs.</li>
+      <li>Bind-mount the shared media volume at a fixed path (example <code>/data/media</code>).</li>
+      <li>Deploy Jellyfin, Jellyseerr, Sonarr, Radarr, Prowlarr, and qBittorrent (compose or preferred install method).</li>
+      <li>Wire Prowlarr → Sonarr/Radarr; point download client to qBittorrent; point Jellyseerr at Sonarr/Radarr and Jellyfin.</li>
+      <li>On the books guest/disk, deploy Kavita, Calibre-Web Automated, and optional librarr.</li>
+      <li>Create libraries in Jellyfin / Kavita pointing at organized folders — not the incomplete downloads root.</li>
+      <li>Store API keys and passwords in a password manager — never in git.</li>
+    </ol>
+    <h3>Backup sketch</h3>
+    <table>
+      <thead>
+        <tr><th>What</th><th>Idea</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>App configs</td><td>Back up <code>/config</code> volumes or guest disks</td></tr>
+        <tr><td>Media library</td><td>Separate job; often large — decide retention deliberately</td></tr>
+        <tr><td>Books library</td><td>Back up books disk or sync off-box</td></tr>
+        <tr><td>Secrets</td><td>Password manager export — encrypted, never plain git</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="use">
+    <h2>Use</h2>
+    <p>Day-to-day: ask in Jellyseerr, wait for automation, watch in Jellyfin. Touch *arr and Prowlarr mainly when something fails.</p>
+    <div class="card">
+      <ul>
+        <li><strong>Request</strong> → Jellyseerr</li>
+        <li><strong>Watch</strong> → Jellyfin</li>
+        <li><strong>Stuck download?</strong> → qBittorrent, then Sonarr/Radarr activity</li>
+        <li><strong>Missing indexer?</strong> → Prowlarr</li>
+        <li><strong>Read</strong> → Kavita (library fed by Calibre-Web Automated / librarr)</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="related">
+    <h2>Related</h2>
+    <ul>
+      <li><a href="https://github.com/Archin3t/ZimaBoard-2-Homelab">ZimaBoard-2-Homelab</a> — Proxmox guest layout, storage, and network blueprint</li>
+      <li><a href="https://github.com/Archin3t/ZimaBoard-NAS">ZimaBoard-NAS</a> — shares, drop folders, and backup target platform</li>
+    </ul>
+    <p>Each companion repo includes its own HTML manual. This page focuses on the media and books application stack.</p>
+  </section>
+
+  <section id="safety">
+    <h2>Safety</h2>
+    <ul>
+      <li>No passwords, API keys, personal usernames, or private LAN addresses in public documentation.</li>
+      <li>Use placeholders (<code>&lt;JELLYFIN_HOST&gt;</code>, <code>&lt;REQUEST_HOST&gt;</code>, etc.) and set real values only on your infrastructure.</li>
+      <li>Prefer LABEL/by-id disk mounts for removable media.</li>
+      <li>Keep books storage separate when you want media-drive isolation.</li>
+      <li>Respect copyright and local law; this documentation describes software roles only.</li>
+      <li>See <code>SECURITY.md</code> in the repo root for the redaction checklist when present.</li>
+    </ul>
+  </section>
+
+</main>
+
+<footer>
+  Archin3t &copy; 2026 — Media Stack documentation only. Not affiliated with Jellyfin, *arr, or related projects.
+</footer>
+
+</body>
+</html>
